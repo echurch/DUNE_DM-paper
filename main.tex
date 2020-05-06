@@ -2,12 +2,14 @@
 \pdfoutput=1 % if you are submitting a pdflatex (i.e. if you have
              % images in pdf, png or jpg format)
 
-\usepackage{color}
+\usepackage{xcolor}
 \usepackage{jinstpub} % for details on the use of the package, please
                      % see the JINST-author-manual
+\usepackage[normalem]{ulem}
+\usepackage[separate-uncertainty,retain-explicit-plus, per-mode = symbol, detect-weight=true, range-units=brackets]{siunitx}
+\usepackage{rotating}
 
-
-\title{Investigation of Dark Matter Detection Capabilities in a Large Liquid Argon Time Projection Chamber}
+\title{Dark Matter Detection Capabilities of a Large Multipurpose Liquid Argon Time Projection Chamber}
 
 
 %% %simple case: 2 authors, same institution
@@ -16,230 +18,463 @@
 %% \affiliation{Institution,\\Address, Country}
 
 % more complex case: 4 authors, 3 institutions, 2 footnotes
-\author[a]{H. Back}
-\author[a]{E. Church} %\note{Corresponding author.}}
-\author[a]{C. Jackson}
-\author[a]{R. Saldanha}
+%%\author{H. Back,}
+\author{E. Church,} %\note{Corresponding author.}}
+\author{C.M. Jackson,}
+\author{R. Saldanha}
 
 
 % The "\note" macro will give a warning: "Ignoring empty anchor..."
 % you can safely ignore it.
 
-\affiliation[a]{Pacific Northwest National Laboratory, Richland, WA 99354}
+\affiliation{Pacific Northwest National Laboratory, Richland, WA 99354}
 
 % e-mail addresses: only for the corresponding author
-\emailAdd{eric.church@pnnl.gov}
+\emailAdd{eric.church@pnnl.gov, christopher.jackson@pnnl.gov, richard.saldanha@pnnl.gov}
+
+
+\newcommand{\todo}[1]{{\tt \color{red}#1}}
+\newcommand{\rs}[1]{{\tt \color{purple}#1}}
+\newcommand{\artn}{$^{39}$Ar}
+\newcommand{\ur}{$^{238}$U}
+\newcommand{\thr}{$^{232}$Th}
+\newcommand{\alphan}{$(\alpha,$ n)}
+\newcommand{\uar}{UAr}
+\newcommand{\fnt}{F90}
+\newcommand{\psd}{PSD}
+\DeclareSIUnit\kgar{kg_\text{Ar}}
+
+\abstract{Liquid Argon Time Projection Chambers are planned to comprise a central role in the future of the U.S. High Energy Physics neutrino program. In particular, this detector technology will form the basis for the 40~kton Deep Underground Neutrino Experiment (DUNE). In this paper we take as a starting point the dual phase far detector design proposed by the DUNE experiment and ask what changes are necessary to allow one of the four 10~kt modules to be sensitive to heavy Weakly Interacting Massive Particle (WIMP) dark matter. We show that with control over backgrounds and the use of low radioactivity argon, which may be commercially available on that timescale, along with a significant increase in light detection, one DUNE-like  module gives a competitive WIMP detection sensitivity, particularly above a dark matter mass of 100 GeV.}
 
 
 
-
-\abstract{Liquid Argon Time Project Chambers (LArTPCS) are planned to comprise  the future of the U.S. High Energy Physics neutrino program. In particular, this detector technology will form the basis for the 40 kton DUNE experiment, beginning roughly in 2024. In this paper we focus on the dual phase far detector design and ask what changes to it may allow one of the four 10 kt modules to be sensitive to heavy WIMP dark matter detection. We show that with control over backgrounds and the use of argon depleted of $^{39}$Ar, which may be commercially available on that timescale, along with a significant increase in light detection, allows for a competitive WIMP detection sensitivity, particularly above 100 GeV.}
-
+% \keywords{Only keywords from JINST's keywords list please}
 
 
-\keywords{Only keywords from JINST's keywords list please}
-
-
-\arxivnumber{1234.56789} % only if you have one
+%\arxivnumber{1234.56789} % only if you have one
 
 \begin{document}
+\setcounter{tocdepth}{2}
 \maketitle
 \flushbottom
 
 \section{Introduction}
 \label{sec:intro}
 
-LArTPCs have been in use in neutrino physics in the ICARUS~\cite{ICARUS} experiment and most recently in the MicroBooNE detector~\cite{MicroB}. Two more LArTPC detectors are currently under construction on the Fermilab campus.
+Liquid Argon Time Projection Chambers (LArTPCs) have been used in neutrino physics in the ICARUS~\cite{ICARUS} experiment and most recently in the MicroBooNE detector~\cite{MicroB}. The culmination of the U.S. LArTPC program will be the construction of the 4-module 40 kt Deep Underground Neutrino Experiment (DUNE) detector, to be located at the 4850 foot level of the Sanford Underground Research Facility near Lead, South Dakota. Data taking for the first two 10 kt modules -- one single liquid phase (SP), and the other dual phase (DP) -- is set to begin in 2024, though the full power neutrino beam is not scheduled to arrive until 2026. The third module will be either SP or DP and the exact technology for the fourth module is currently unspecified. This fourth 10 kt detector is known, therefore, as the module of opportunity \cite{dune_mood}. 
 
-The culmination of the U.S. LArTPC program will be the construction of the 4-module 40 kt DUNE detector, to be located at the 4850 foot level of the Sanford Underground Research Facility near Lead, South Dakota. Data taking for the first two 10 kt modules -- one single liquid phase (SP), and the other dual phase (DP) -- is set to begin in 2024, though the full power neutrino beam is not scheduled to arrive until 2026. The third module is slated as either SP or DP and the exact technology for the fourth module is currently unspecified. This fourth 10 kt detector is known, therefore, as the module of opportunity. The main charge for investigators putting forward ideas for this module is that the main neutrino physics program of detection of the Charge Parity (CP) phase and the mass hierarchy determination are not compromised.
+The main charge for investigators putting forward ideas for the module of opportunity is that the primary neutrino physics program of detection of the Charge Parity (CP) phase and the mass hierarchy determination are not compromised.  There are many suggested ideas currently under discussion which will take advantage of research and development and are presumed to be available on the 2026 timescale. However, to our knowledge, few ideas for the module of opportunity consider expanding or improving the non-neutrino-beam physics program. 
 
-There are many suggested modifications under discussion currently within the collaboration which will take advantage of R\&D which are presumed to be available on the 2026 timescale. Few ideas for this module of opportunity to our knowledge, however, consider expanding or improving the non-neutrino beam physics program. 
+Dual phase LArTPCs have also been successfully deployed as Weakly Interacting Massive Particle (WIMP) dark matter detectors, though currently of a size significantly smaller than the dedicated neutrino experiments. The DarkSide-50 experiment~\cite{agnes2018darkside} used $\sim 50$~kg of low radioactivity argon to set a background-free limit on dark matter. The DarkSide-20k~\cite{darkside20k} and ARGO~\cite{darkside20k}  experiments plan to continue this program down to the so-called neutrino floor. Liquid xenon TPCs~\cite{xenon1t} have also provided the world's most sensitive searches for WIMP dark matter at high masses.
 
-We take note of the following  deficiencies in the DUNE program, as pointed out in the CDR~\cite{TDR} and in internal DUNE discussions. The Supernova explosion detection efficiency is lower than had been specified in the CDR (?), particularly at low energies; the solar neutrino program, recently being planned would benefit from a lower  threshold than the current ~10 MeV; formation of light "flashes" for determination of T0 in all manner of physics events is poor for low energy events, especially far from the light collectors. All of these problems have as their root causes  poor light collection and radioactive backgrounds in both the SP and DP detectors.
+This paper proposes that addressing issues of light collection and radioactive backgrounds with sufficient seriousness provides a viable path to making the DUNE detector sensitive to the detection of nuclear recoil interactions of high mass WIMP dark matter. We discuss the possibility of a detector filled with 17 kt of low radioactivity underground argon that allows for the usual 10 kt fiducial volume and an inner, densely instrumented, self-shielded 1 kt volume of liquid argon for WIMP dark matter detection. Estimations of the radioactive backgrounds yield the conclusion that this detector can be a competitive dark matter detector on a schedule that expedites the world program at a reasonable cost, while preserving the main physics charge of DUNE.
+We note that improvements to the light collection and radioactive backgrounds could also improve the sensitivity to supernova and solar neutrinos, further expanding the physics scope of the experiment.
 
-Explicitly, this paper proposes that  addressing these problems with sufficient seriousness provides a viable path to making the DUNE detector sensitive to detection of high mass dark matter. In this paper we discuss the possibility of a detector filled with 17 kt of argon depleted of $^{39}Ar$ that allows for an inner, radio-pure, self-shielded 1 kt volume of liquid argon.  We propose viewing that volume with light detection that can yield 100 photons/$keV$. We make three calculations that yield the conclusion that this detector can be a competitive DM detector on a schedule that expedites the world program, while preserving the main physics charge of DUNE.
+\section{Detector Requirements for WIMP Dark Matter in a DUNE-like detector}
+We require the ability to achieve a $\sim$ 100 keV nuclear recoil (keV$_r$) threshold and net backgrounds of $\cal{O}$(10) events or lower from gammas and neutrons over a 3 kt$\cdot$year exposure in order to be sensitive to dark matter in our fiducialized argon. The energy threshold comes from the consideration of what is required to cover interesting parameter space for the WIMP search, though we also explore the increase in sensitivity achievable with lower thresholds and lower backgrounds.
 
+\subsection {The LArTPC Far Detectors envisaged for DUNE}
 
-\section {The LArTPC Far Detectors at DUNE}
+The proposed DUNE SP far detector is comprised of modular blocks called Anode Plane Assemblies (APAs). One 10 kton cryostat is proposed to consist of 150 APAs. Each APA is comprised of one or two TPCs, which share a common high voltage cathode and two sets of three wire planes. A stainless steel cathode sits in the middle of any two APAs to provide the 500 V/cm electric field for each TPC. Light collection is mounted inside the wire anode planes. Due to the placement of material within the liquid argon we judge the radiopurity requirements for a SP detector to be sensitive to dark matter will be too strict to be achievable on a reasonable budget, so focus this paper on the DP phase design. 
 
-The proposed DUNE Single Phase far detector is different from the preceding detectors in a few ways. First, it is comprised of modular blocks called Anode Plane Assemblies (APAs). One 10 kton cryostat is proposed to consist of ~125 (???) APAs. Each APA is comprised of one or two TPCs, which share a common high voltage cathode and two sets of three wire planes. A stainless steel cathode sits in the middle of any two APAs to provide the 500 $V/cm$ electric field for each TPC. A second key difference from existing LArTPCs is that light collection and wave-length shifting in the Single Phase DUNE far detectors resides in thin, so-called ARAPUCA assemblies that are mounted inside the wire anode planes.
-
-The proposed DUNE Dual Phase far detector is, by contrast, one large, approximately 12x12x60 m$^3$ volume of liquid argon, without large panels of G10, stainless steel frames and wire assemblies in the liquid. The cryostat in which any 10 kton detector, SP or DP, is housed is the same. The drift is upward, across 12 meters of liquid argon. The design electric field is the same as for the SP detector. When ionization electrons arrive at the top liquid surface they are extracted with a high-field grid that produces an avalanche process, where at least a multiplication of ten (???) is achieved. Charge is collected onto positively biased pads, which are then read out to produce full x,y,z information (given a T0 constraint). 175 PMTs sit on the detector floor in the x-z plane and receive 2 photons/MeV to provide the needed T0 for an event.
+The proposed DUNE DP far detector is one large (approximately 12x12x60 m$^3$) volume of liquid argon, without APAs or cathodes in the bulk liquid. The drift direction is upward, across 12 meters of liquid argon. The design electric field is the same as for the SP detector (500 V/cm). When ionization electrons arrive at the top liquid surface they are extracted into the gas with a high-field grid that produces an avalanche process, where at least a multiplication of ten is achieved. Charge is collected onto positively biased pads, which are then read out to produce full x,y,z information. 175 PMTs sit on the detector floor in the x-z plane and provide the needed initial time for an event.
 
 \subsection{Proposed DUNE Dual Phase Design Modifications }
-For our purposes, we propose using the DP design with its uninterrupted volume of liquid argon, free of radio-impure material in the bulk of the detector. We require the dual phase mechanism of charge extraction and multiplication.  However, we suggest to read out the photons, which are even more abundantly produced, after the multiplication stage rather than charge. Such a strategy allows to get to lower physics thresholds with high significance and simpler instrumentation than for charge readout. We propose that we use an inner 1 kT of argon of volume 6x6x20 m$^3$ for WIMP dark matter detection and more finely instrument S1 and S2 to read out that volume. Thus, for the S2 region we remove the charge readout pads in favor of either SiPMs or ARIADNE cameras~\cite{ARIADNE}. We point out that the latter camera is being developed in an intensive R\&D program with the express purpose of competing to serve as the DUNE DP S2 light readout, rather than S2 charge. ARIADNE appears to be able to easily provide the necessary spatial resolution for  multi-site nuclear recoil detection and at a fraction the cost needed for the same SiPM coverage. For S1 we propose to tile the bottom 8x22 m$^2$ with large $\cal{O}$(5cm$^2$) SiPMs.  The extra meter on all four sides allows for the multi-site rejection, which may be needed at low thresholds. If enough neutron moderator is used it may suffice to read out finely only over the 6x20 m$^2$.
+For dark matter detection purposes, we propose using the DP design with its uninterrupted volume of liquid argon, relatively free of radioactive material in the bulk of the detector. The modifications we propose to make are: a highly fiducialized low radioactivity argon target, additional shielding and improved photodetection systems. We show in Figure~\ref{fig:dunecad} some important elements of our detector design.
 
-A problem we know we will have to confront is which S1 light of the roughly twelve remaining $^{39}$Ar events in our depleted Argon goes with which S2 light. These ambiguities will be easier to resolve the better is our x-y position resolution.
-
-\subsection{Detector Requirements for Dark Matter}
-We require roughly 100 detected photons and the ability to achieve a 100 $keV$ threshold to detect dark matter in our inner 1 kton of fiducial argon. Net backgrounds of $\cal{O}(100)$ events from gammas and neutrons or lower are required. The energy threshold comes from the consideration of what is required to cover interesting parameter space for the WIMP search, though we also consider lower thresholds and lower backgrounds to show possible competitiveness with the world program. The 100 photons is a minimum requirement to be able to employ the technique widely-used in argon dark matter searches of pulse-shape discrimination (PSD). We will discuss this in a coming section at greater detail.
-
-\subsubsection{DUNE Dual Phase Light Detection}
- We will want both $S1$ and $S2$, as in any dual phase dark matter detector. This added photon collection allows to detect $x,y,z$ from $S2$ and $S1$ combined information, while also contributing to the energy measurement that comes from $S1$.
-
-\subsection{Relevant Backgrounds}
-Neutrons enter from the walls from the Uranium/Thorium chain, as well as from detector materials and from Radon alpha,n reactions that may allow neutrons to mix into the argon itself. We will show that neutrons from walls can be ameliorated. Radon-induced neutrons will be dealt with in the cryogenic system.
-
-For this potential new 10 kt module in DUNE we add 50 cm of poly inside the cryostat lining of the geometry of our model, informed by studies~\cite{beacom} that other solar neutrino measurements will require this neutron shielding, as well. This simple tactic reduces external neutron penetration effectively.
-
-Next, gammas may enter from the outside materials and could conceivably penetrate into our fiducial inner 1 kt, despite self shielding. Here we will investigate the highest suspected radiological background gamma sources in DUNE and demonstrate that they are far sub-dominant to the relic $^{39}$Ar content of our underground argon, and thus taken care of by PSD.
-
-\subsubsection{Gammas}
-Gammas enter dominantly from $^{40}$K in the G10 in the detector materials. The DUNE background taskforce estimates these~\cite{bgd-taskforce} at 4.9 Bq/kg entering from the G10 circuit boards. We thus perform a study in which we run $^{40}$K decays from our detector ceiling where the G10 would be. We presume a 3mm thick 10mx58m sheet of G10; we find that the 1.46 MeV gammas appear at the sub $10^{-3}$ level per kt-year and ignore this background subsequently.
-
-We also simulate $^{208}$Tl decays since that particular isotope is part of the Th/U decay chain, and the 2.61 MeV daughter gammas are less self-shielded than the lower energy $^{40}$K gammas. With simulations, using the DUNE background taskforce's 25 mBq/kg from G10, we find five [3] (7) [ events of 27E6 initial decays survive above 75 (100) [50] keV into our inner volume. This scales to 185 (110) [270] events per year. This is easily removed via PSD.
-
-
-\subsubsection{Neutrons}
-There are not only nuclear scatters from neutrons, but there are also n,Ar to Ca,$\gamma$ (neutron capture) reactions in the argon bulk. However, while indeed a 6-9 MeV capture $\gamma$ is a background to solar $\nu_e$ charged current reactions, it will not be confused for a WIMP scatter. Thus, while neutron amelioration benefits will accrue to any DUNE solar neutrino program, we concern ourselves in this paper with reducing and removing neutron nuclear scatters.
-
-\subsubsection{Radon}
-Radon swirls around in the bulk of the detector, and its $\alpha$ decays interact on argon neutrons, leading to neutrons that can mimic WIMP scatters.
-
-We plan to use charcoal filters to control this background. 
-RICHARD/CHRIS: please finish.
-
-\subsection{Underground Argon}
-Underground Argon has been employed for Darkside50~\cite{darkside50} which used argon depleted in $^{39}Ar$ by a factor of 1400 from its abundance in surface argon. Darkside20k plans to use this same source of argon.
-
-HENNING/CHRIS/RICHARD more words here.... concluding with ...
-
-Pulse Shape Discrimination (PSD) allows a nuclear recoil to electron rejection of $10^{-9}$ in Darkside50.
-
-A benefit of employing depleted argon, apart from making DUNE potentially able to do dark matter physics, is that the mere reduction of the $^{39}$Ar background activity allows for far superior matching of detected light and charge activity, particularly for the sub-10 $MeV$ range than is currently achievable (see Figure~\ref{fig:flashmatch}). Strong model dependence is involved in statements about detection efficiency for extra-galactic SN explosions, but we can confidently state that galactic SNE detection below 12 MeV should increase from the current \_\_\_.
-
-\begin{figure}[t]
+\begin{figure}[ht]
 \begin{centering}
-\includegraphics[width=0.90\columnwidth]{Figures/flashmatch.png}
+\includegraphics[width=1.00\columnwidth]{Figures/DuneCADModelV5.png}
 \par\end{centering}
-
-\caption{Shown is the improved optical "flash" match to charge activity with reduced $^{39}$Ar. At large values of the drift dimension, well away from the single phase light detectors, the optical "flash" is far more liable to be correctly identified with  the supernova event's drifted charge and not plagued by low purity mis-identification as in the red with normal argon. Certainly, better light detection as proposed here increases the match efficiency.  \label{fig:flashmatch}}
+\caption{Drawing of proposed DUNE-like DP detector for WIMP dark matter searches. The fiducial volume, shown by the red inner box, measures 4.2 by 4.2 by 40 m$^3$, with a mass of 1 kt. It is not physically distinct from the bulk argon in which it sits. The tall white box that surrounds the fiducial volume (extended by a meter on the four sides) is formed by 5-cm thick acrylic walls covered in wavelength-shifting foils. The floor of the detector within the acrylic box has 75\% photo-coverage with 24x24 cm$^2$ SiPM tiles (black). The floor outside that area has the same coverage as the original proposed DUNE DP detector: a photodetector at each square meter, except we propose using these same SiPM tiles rather than PMTs. Photo-coverage of the ceiling is not shown, but is similar to the floor except that perhaps an ARIADNE-like camera will serve rather than SiPMs in the gas multiplication region. The field cage is unchanged from the DP design, showing the standard resistor divider chains and supports (green) just inside the cryostat. The cryostat itself consists of a 1.2 cm stainless steel inner "cold cryoskin", 1 cm of wood, 76 cm of polyethelyne foam and an outer stainless steel cryoskin. Outside the cryostat a coarse structure of I-beams and 40 cm of water (blue) are shown. \label{fig:dunecad}}
 \end{figure}
 
-We note that with the expected 10$^{-5}$ depletion factor, ~12 flashes from $^{39}Ar$ events remain in the drift volume which must be rejected by the S1 and S2 systems. This is an offline task and benefits from particularly fine $x-y$ position resolution, though we don't demonstrate the needed requirement here.
+We propose a central fiducial volume measuring 4.2 by 4.2 by 40 m$^3$, with mass 1 kt, for WIMP dark matter detection. This shape, with at least 3.5 m of liquid argon on all sides, allows self-shielding from external backgrounds. We will replace the atmospheric argon target in this module with low radioactivity argon as discussed in Section~\ref{argon39}. We add acrylic walls inside the detector, of thickness 5~cm, to act as mechanical support for wavelength shifting and reflective coatings and as an additional shield for neutron events from the cryostat. The acrylic walls are situated 1~m outside of the fiducial volume to allow for improved neutron multi-site scattering rejection and the inner volume is open in the vertical direction to allow electron drift.
+
+The inner volume of the detector light collection is enhanced in two ways. We plan to cover the inner walls of the acrylic shield with wavelength-shifting reflective foils, retaining the scintillation light within this volume. We also propose replacing the photomultiplier tubes with Silicon PhotoMultiplier (SiPMs) and increasing the effective area covered from 3\% to 75\% to improve coverage of the initial scintillation light (S1), which can be used to provide pulse shape discrimination of electron versus nuclear recoils. 24x24 cm$^2$ tile SiPMs as developed for DarkSide-20k would provide a suitable technology for this~\cite{darkside_sipm}. The motivation of the size of the inner volume is largely cost-based, additional photodetection coverage outside the inner coverage would be a possibility to increase the sensitivity further.
+
+In order to achieve the low-energy thresholds required for sensitivity to nuclear recoils from dark matter interactions we require the dual phase mechanism of charge extraction from liquid into gas and amplification in the gas region.  However, we suggest to measure the ionization charge through the read out of electroluminescence photons (S2), produced by accelerating electrons through the gas phase. Such a strategy enables lower energy thresholds and simpler instrumentation than for charge readout, and we simultaneously improve the overall light collection for the scintillation light (S1). Thus, for the S2 region we remove the charge readout pads in favor of either SiPMs or ARIADNE cameras~\cite{ARIADNE}. We point out that the latter camera is being developed in an intensive R\&D program with the express purpose of competing to serve as the DUNE DP S2 light readout, rather than charge. ARIADNE appears to be able to easily provide the necessary spatial resolution for  multi-site nuclear recoil detection and at a fraction the cost needed for the same SiPM coverage. Finally, external water shielding of 40 cm (as discussed in Reference~\cite{beacom_bkd}) allows reduction of neutrons from the external rock.
+
+\subsection{Backgrounds}
+In this section we discuss the radioactive backgrounds and reduction strategies that must be addressed to construct a viable WIMP dark matter experiment in a DUNE-like module.
+
+\subsubsection{Neutrons}
+Neutrons are a dangerous background for direct dark matter detectors, because they can induce nuclear recoils that mimic the expected signal from WIMP-like interactions. Neutrons are also a source of background for any nascent DUNE solar and planned supernova neutrino program, as neutron captures on argon produce a 6-9 MeV $\gamma$ that mimics $\nu_e$ charged current reactions. Thus, while neutron amelioration benefits will accrue to any DUNE low-energy neutrino program, we concern ourselves in this paper with reducing and removing neutron-induced nuclear recoils. 
+
+The main sources of neutron backgrounds are cosmogenic and radiogenic. Interactions of cosmic ray muons in the surrounding rock and detector materials can produce high energy neutrons that are difficult to shield. The cosmogenic neutron background is considered in~\cite{beacom_bkd} and may be addressed effectively by tagging the muon and/or fiducializing, as we are doing aggressively. 
+
+Neutrons can also be produced through spontaneous fission or \alphan ~interactions, where the $\alpha$ particle is typically produced in the decay chain of uranium and thorium present in surrounding materials.  For this potential would-be DUNE module we propose to add 40 cm of water outside the cryostat lining, informed by other studies that indicate solar neutrino measurements will require this neutron shielding~\cite{beacom_snu}, as well as our own studies detailed in Section~\ref{sec:nba}. This simple tactic reduces external neutron penetration from the outer rock effectively. In Section~\ref{sec:nba} we also consider the dominant internal neutron contribution from the stainless steel forming the inner cold cryo skin.  
+
+\subsubsection{Betas from \artn}~\label{argon39}
+Argon extracted from the atmosphere contains the radioactive isotope \artn~at a specific activity of roughly \SI{1}{\becquerel\per\kgar}. \artn~is a pure $\beta$ emitter with an endpoint energy of \SI{565}{keV}, and therefore, for large liquid argon experiments such as DUNE, the low energy spectrum is dominated by \artn~decay. There are two mitigation strategies that we propose to use to achieve the low background levels necessary for dark matter sensitivity: the use of argon derived from underground sources and pulse shape discrimination (PSD).
+
+%\paragraph{Underground Argon}
+Since \artn~is primarily produced by cosmogenic activity, argon derived from deep underground (underground argon or \uar) can have extremely low levels of \artn. \uar~derived from gas wells in Colorado has been employed in Darkside50~\cite{darkside50}, and was demonstrated to have an $^{39}$Ar activity roughly 1400 times lower (\SI{7.3E-4}{\becquerel\per\kgar}) than the activity in atmospheric argon. Darkside-20k plans to use this same source of argon. It is clear a new source or \uar~is required for any tens-of-kt liquid argon experiment. A major U.S. gas producer/supplier estimates~\cite{privateconv:gaspro} that approximately 5 kt/year of \uar~may be deliverable at a cost as low as three times that of atmospheric argon. An expression of interest from a collaboration is required for samples to be delivered and the next tests to be conducted: that is, confirming the low activity of $^{39}$Ar. We note that if the proposed central acrylic box can be made leak-tight, \uar~can be deployed only within the dark matter target volume, reducing the amount of \uar~required from 17.5 kton to 4.3 ktons. An additional benefit to the DUNE low-energy neutrino program of employing underground argon, apart from dark matter physics, is that the reduction of the $^{39}$Ar background activity allows for far superior matching of detected light and charge activity (particularly for the sub-10 MeV range) than is currently achievable.
+
+%\todo{We note that with the expected 10$^{-5}$ depletion factor, ~12 flashes from $^{39}Ar$ events remain in the drift volume which must be rejected by the S1 and S2 systems. This is an offline task and benefits from particularly fine $x-y$ position resolution, though we don't demonstrate the needed requirement here.}
+%\begin{figure}[ht]
+%\begin{centering}
+%\includegraphics[width=0.90\columnwidth]{Figures/flashmatch.png}
+%\par\end{centering}
+%\caption{\todo{Remove} Shown is the improved optical "flash" match to charge activity with reduced $^{39}$Ar in the single phase design. At large values of the drift dimension, well away from the single phase light detectors, the optical "flash" is far more liable to be correctly identified with  the supernova event's drifted charge and not plagued by low purity mis-identification as in the red with normal argon. Certainly, better light detection as proposed here increases the match efficiency.  \label{fig:flashmatch}}
+%\end{figure}
+
+%\paragraph{Pulse Shape Discrimination (PSD)} 
+Pulse Shape Discrimination from the time profile of argon scintillation light can be used to discriminate nuclear recoil interactions (as expected from WIMP dark matter interactions) from electron recoils with extremely high efficiency. A simple discrimination parameter that is often used is \fnt, which is the fraction of scintillation light that is detected in the first ninety nanoseconds compared to the total amount of scintillation light. For the applied electric fields and energy range of interest to a large LArTPC like DUNE, the average value of \fnt~for electron recoils is roughly 0.3, while for nuclear recoils it is roughly 0.7. The width of the \fnt~distributions, which determines the discrimination power, is strongly dependent on the light collection efficiency of the detector, as the more scintillation light is detected, the more accurately \fnt~can be determined. The DarkSide-50 detector had a light yield of 7.9 photoelectrons/keV$_{ee}$ at null field, and at it's operating drift field of \SI{200}{\volt\per\cm} achieved a discrimination factor of $> 1 \times 10^7$, with more than 50\% nuclear recoil acceptance above $\sim 100$ detected photons ($\sim$ 47 keV$_r$) \cite{darkside50}. Through simulations detailed in Section~\ref{photoncount} we show that sufficient light collection for PSD is achievable with an increase in photon detection coverage compared to the current DUNE design.
+
+There is one further problem that must be overcome: pileup of accidental \artn~decays between the S1 and S2 signals of an individual event, which will make it difficult to associate the correct S1 and S2 signals with each other. The maximum drift time in the current design of the DUNE DP module is roughly 7.5 ms at a drift field of 500 V/cm. For the assumed \artn~rate in the underground argon of $7.3\times10^{-4}$ Bq/kg within the 4.3 kton acrylic box, the average number of pileup events forin{f} interactions at the center of the fiducial volume is 12 events. This pileup can be reduced by using the spatial distribution of S1 scintillation light on the top and bottom photosensors to match it to the observed relative timing and x-y location of S2 signals. If such pattern matching algorithms do not work efficiently enough, one could further optically divide the acrylic box with intermediate reflective foil separators 
+(with little effect on the backgrounds).
+
+\subsubsection{Gammas}
+Gamma rays produced by decays of radioactive isotopes in detector materials are another source of backgrounds. The chosen fiducial volume has at least 3.5 m of liquid argon surrounding it on each side which serves to greatly attenuate the gamma ray backgrounds from outside the argon. As higher energy gammas are more penetrating than those at lower energy, we will consider the most abundant high energy gammas from both $^{40}$K and $^{208}$Tl decays.  As shown in Section~\ref{sec:gamma_bkgd_calc}, the residual gamma ray background is negligibly small compared to the internal \artn~background and can be easily removed through PSD. Note that the light-tight acrylic box prevents scintillation light emitted by external gamma ray interactions from affecting the reconstruction of events occurring in the fiducial volume. 
 
 
+\subsubsection{Radon}
+Radon is a dangerous background for nearly all low background detectors due to its high mobility as a chemically inert gas, it's relatively long half-life (3.8 days), and it's broad spectrum of radioactive decay products and energies. Radon emanated from detector materials in direct contact with the argon can enter the active volume where the decays of its daughters can contribute to the background. The contributions from the dominant source of backgrounds are considered in Section~\ref{sec:radon_calc}. 
+
+The use of an inline cryogenic radon trap in the argon recirculation system can greatly reduce any radon emanated by the warm sections of the recirculation system, as has been demonstrated by the DarkSide-50 experiment \cite{agnes2015first} which achieved a bulk radon concentration of less than 2 $\mu$Bq/kg \cite{darkside20k}. We use this as our baseline assumption for the radon concentration in the proposed detector, though we note that the smaller surface-to-volume ratio of larger detectors could lead to a significantly lower radon concentration level. For example, the DEAP-3600 detector achieved a radon concentration level of 0.2 $\mu$Bq/kg \cite{amaudruz2018first}.
+
+%The radon level in a detector the size of DUNE is expected to be much smaller due to the much larger volume-to-surface ratio.
+
+\subsubsection{Neutrinos}
+Neutrinos can be a significant source of backgrounds for large dark matter detectors. For liquid-argon based detectors, neutrino-electron scatters can be easily identified and rejected using PSD. The most dangerous source of background is therefore coherent scattering of neutrinos with the argon nuclei, which are indistinguishable from WIMP-induced nuclear recoils and are therefore an irreducible background. In the energy range of interest for this proposed detector, only atmospheric neutrinos and the diffuse supernova neutrino background are energetic enough to produce nuclear recoils above threshold. The rates of these events are estimated in Section~\ref{sec:neutrino_calc}.
 
 \section{Calculations}
-\subsection{Neutron Amelioration}
 
-Upon running various gamma and neutron simulations and using information from the DUNE background taskforce, we find that the biggest background source in our chosen detector configuration is from external neutrons emanating from the cavern walls in the Uranium/Thorium chain.
-While there are great uncertainties on the {n,Ar} reaction, we take a worst case scenario, as is in fact coded into Geant4 10.5 that neutrons proceed mostly transparently through argon. We know there are results~\cite{svoboda} in process that will only increase this cross-section. We ameliorate the neutron problem in two ways: with a proposed 50 cm plastic liner just inside the cryostat and with a reconstruction technique that allows to detect and remove multi-site neutron-induced nuclear recoil events.
+In this section we describe the calculations made to explore the viability of a DUNE-like module as a dark matter detector.
 
-See figure~\ref{fig:neutrons} for the incident DUNE neutron spectrum (graph-clicked from~\cite{bgd-taskforce}) and the neutron background which survives propagation and multi-site rejection in the inner 1 kt.
+\subsection{Neutron Background Amelioration}~\label{sec:nba}
+We propose to ameliorate the neutron background in the following ways: we employ 40~cm of external water tanks outside the cryostat to reduce neutrons from the external rock, we add 5~cm of internal acrylic shielding around the inner volume, we strongly fiducialize using the  self-shielding of an inner kt of argon, and we employ a reconstruction technique that allows to detect and remove multi-site neutron-induced nuclear recoil events. 
 
-\begin{figure}[t]
+%%\rs{\begin{itemize}
+%%   \item Describe Geant4 setup (geometry, active volume definition)
+%%   \item Neutron spectrum, starting point, details. 
+%%   \item Implementation of multi-site rejection, energy threshold
+%%   \item Results
+%%\end{itemize}}
+
+For this study we set up a simple Geant4 10.05~\cite{Geant4} geometry, consisting primarily of a large 17 kt rectangular prism of liquid argon surrounded by a cryostat consisting of a 1.2 cm stainless steel inner "cold cryoskin", 1 cm of wood, 76 cm of poly-ethelyne foam and an further outer 1.2 cm stainless steel cryoskin. The full geometry details are shown in Figure~\ref{fig:dunecad} and described in its caption.  A standard physics list is employed, with neutron elastic scatters obeying {\tt G4HadronElasticPhysicsHP}. Neutrons were launched from external planes representing rock neutrons as well as from the 1.2 cm stainless steel of the inner cryostat. The neutron energy spectra (see for example Figure~\ref{fig:neutrons}), were taken from~\cite{vk} and normalized in a 2:1 ratio of \ur:\thr. The neutron activity from the rock is assumed to be $1.0 \cdot 10^{-5}$~/s/cm$^{2}$~\cite{cavernRock}. We use a relatively high total activity of $2.0 \cdot 10^{-9}$~/s/cm$^3$ for the overall normalization in steel, based on the assumption that radiopurity in a large LArTPC is unlikely to reach levels of dedicated dark matter experiments. This compares to the much lower $4.2 (2.7) \cdot 10^{-11}$~/s/cm$^3$ from  concentrations of 2.8 (1.4) mBq/kg of \ur~and 0.8 (0.82) mBq/kg of \thr~ for Darkside-20k~\cite{agnes2018darkside} (LZ~\cite{LZ}).
+
+\begin{figure}[ht]
 \begin{centering}
-%%\includegraphics[width=0.90\columnwidth]{Figures/NeutronKE_interact005_25_dunedistn.png}
-\includegraphics[width=0.90\columnwidth]{Figures/NeutronKE_interact0075_20_dunedistn_25cmPoly.png}
-\par\end{centering}
-
-\caption{ Shown are the external neutron spectrum emanating from outside the cryostat at an assumed 10 Hz and the surviving events in the inner 1 kt, and the net remaining contribution after multi-site cuts are applied. We presume a 75 keV n.r. detection threshold here and a 20mm or greater multi-site minimal detectable distance. This simulation uses a 25 cm Poly liner in the cryostat.
+%%\includegraphics[width=0.90\columnwidth]{Figures/NeutronKE_interact0075_20_dunedistn_25cmPoly.png}
+%%\includegraphics[width=0.48\columnwidth]{Figures/NeutronKE_interact01_20neutron_outsidefoamwoodss_dunedistn_liquid.png}
+%%\includegraphics[width=0.48\columnwidth]{Figures/NeutronKE_interact01_20neutron_outsidefoamwoodss_cs_5cm_dunedistn_22x8acryl_liquid.png}
+\includegraphics[width=0.90\columnwidth]{Figures/neutrons_vk.png}
+\end{centering}
+\caption{Neutron spectra for  U and Th decays chains in stainless steel from~\cite{vk}, used in this study (normalized in the ratio 2:1) for cold cryoskin neutron emanation.
 \label{fig:neutrons}}
 \end{figure}
 
-\subsection{Photon Counting}
-CHRIS J's toy simulation. 
-Reproduces the DP default 2 ph/MeV.
-What is necessary is to get a plausible 1 ph/keV.
+Nuclear recoils above a prescribed energy threshold, usually 100 keV, were selected. Multi-site rejection was identified as a strategy to separate true WIMP scatters from neutron induced nuclear recoil multiscatters. A dual phase TPC, such as the DUNE DP detector allows excellent position resolution. Transverse and longitudinal diffusion in the liquid argon across drifts of $\sim10$~m are expected to be far less than 1~cm. The time-sampling of the arriving drift electrons is easily high enough to preserve the longitudinal spread, whereas a few cm transverse resolution from the S2 light detectors -- easily met by the ARIADNE system and also by a SiPM solution at higher cost -- allows sufficient resolution to reconstruct distinct nuclear scatters. If a second above-threshold scatter is detected in a region of the projected fiducial volume on to the floor {\it plus} a further meter on any of four sides, we remove that event from consideration as a neutron multi-scatter cut. We presume we have a 20~mm resolution in the dimension perpendicular to the drift for this two-site tagging. We calculate the resulting neutron background which survives propagation and multi-site rejection in the inner 1 kt. Figure~\ref{fig:neutrons_xy} shows a 15 kt-year simulation of the sites of a nuclear recoil of at least a 100 keV, demonstrating the self-shielding efficacy of the argon itself.%%%% \sout{While there are great uncertainties on the {n,Ar} reaction, we take a worst case scenario, as is in fact coded into Geant4 10.5 that neutrons proceed mostly transparently through argon. We know there are results~\cite{svoboda} in process that will only increase this cross-section, leading to quicker neutron capture, and thus diminishing nuclear recoil background.} .
 
-DUNE DP's OPTICAL SIM. Can we check that we corroborate anything done already? Please state even if qualitatively the need for wls foils, etc, and if they may need to be in the bulk argon. I've said something to this effect in the conclusion.
+\begin{figure}[ht]
+\begin{centering}
+\includegraphics[width=0.90\columnwidth]{Figures/neutrons_xy.png}
+\end{centering}
 
-\subsection{Pulse Shape Discrimination}
-Richard's Darkside-based simulation that shows 100 photons at 100 keV can allow an argon gamma background at the level of the neutron background of ~50 evts. We show an $^{39}$Ar beta/n rejection factor here of $10^{-9}$ at 100 keV and even at 75 keV.
+\caption{The x-y (transverse to beam) location for a neutron interaction point in which a nuclear recoil above 100 keV occurs and for which the neutron originated from the cold cryoskin. The fiducial volume is superimposed. The z extent (beam-direction) is constrained to the fiducial 40m. This is a 15 kt-year simulation, using a stainless steel activity as described in text. }
+\label{fig:neutrons_xy}
+\end{figure}
 
-RICHARD will check these words and that he's done this correctly.
+Through both simulation and the study of~\cite{beacom_bkd} we calculate that 40 cm of external water moderator and a 100 (75) keV nuclear recoil threshold removes essentially all external rock neutrons, giving a 0.1 (1.6) counts/3 kt-yr. From simulations we also learn that for a 100 keV threshold less than one event from the stainless steel inner cold cryoskin survives into our inner kiloton of liquid argon per year of exposure. A 75 keV nuclear recoil threshold admits 9.55 events. We find the multi-site rejection gives a factor of 30\% (50\%) rejection at 100 (75) keV threshold. Multiplying by 0.5 for nuclear recoil acceptance and by 3 for 3 kt-yr exposure we arrive at 1.02 (14.2) events for a 100 (75) keV threshold. Achieving these backgrounds imposes a not-unreasonable radiopurity constraint on the cryostat steel. It should be noted if the radiopurity of stainless steel from dark matter experiments could be achieved in a LArTPC like the one proposed here, a further factor 100 in neutron background would lead to the removal of this background.
+
+\subsection{Photon Counting}~\label{photoncount}
+Light detection in the currently designed DUNE dual phase detector is relatively limited and is dedicated to timing measurements (T$_0$) of 
+%non-beam 
+events in the drift direction. The system includes 720 8" Hamamatsu R5912-20Mod PMTs, distributed uniformly across the bottom surface of the detector, resulting in a photocathode coverage of about 3\%. The target dual phase photon detection light yield from ProtoDUNE data and simulation is an average of 2.5 photoelectons per MeV~\cite{TDR}. To take advantage of the pulse shape discrimination information in the initial scintillation (S1) light, this light yield is insufficient and must be increased to closer to 1000 photoelectrons per MeV.
+
+To explore the effects of increasing the photon detection system coverage on the light yield a pseudo-Monte Carlo model of photon propagation in the detector was created. Argon scintillation events were created randomly throughout the detector fiducial volume with random momentum vectors, assuming prompt scintillation of 1250 photons per 100 keV, as measured by the SCENE collaboration for fields of 500 V/cm~\cite{cao2015measurement, cao2014study}. Individual photons were extrapolated to the edges of the detector, where photons were either absorbed and lost at the wall, or triggered the photon detector assuming a 50\% wavelength shifting probability (from geometric acceptance arguments) and using measured quantum efficiencies (QE) of the PMTs of 14\%. Attenuation in argon was assumed to be negligible. Using a Rayleigh Scattering length of 55cm, and assuming a 50\% probability that a photon scatters backwards away from the photosensors during such a scatter, the DUNE DP simulation result of 2.5 photons/MeV was reproduced to within 20\% accuracy.
+
+A study of options to increase the photon detector system coverage to reach light yields of 1 photon/keV, was made. To reach this target several improvements must be made:
+\begin{itemize}
+    \item Increase reflectivity of internal surfaces of the detector. A foil of 97\% reflectance was assumed at the edge of the inner volume attached to the inner wall of the acrylic shield. This was simulated as a specular reflector and photons were allowed to reflect up to 10 times before absorption at the wall or detection at a photosensor.
+    \item Enhancement of light coverage. An increase in the geometric coverage at the bottom of the detector was simulated by increasing the packing of the photosensors, and hence the global photocathode coverage. The possibility of using additional light collection at the top of the detector (by replacing the charge readout with SiPMs or the ARIADNE cameras) was also considered.
+    \item Increase photon detection quantum efficiency. It was found that even with full geometric coverage on the top and bottom with the current planned DUNE DP PMTs, the light yield could not reach 1 photon/keV due to the 14\% quantum efficiency of the detector. It is proposed to use SiPMs with 45\% QE as planned for DarkSide-20k.
+\end{itemize}
+
+The results of the toy simulation where the refective foils and SiPMs are added are shown in Figure~\ref{fig:pecoverage} as a function of geometric photocathode coverage. It was found to reach the 1 photon/keV target light yield, photocathode coverage must be 73\% or 34\% for the assumptions light can be read out on the bottom only or top and bottom respectively. This corresponds to a total of 2200 24x24 cm$^{2}$ DarkSide-20k SiPm tiles which is within the reach of planned production techniques.
+
+\begin{figure}[ht]
+\begin{centering}
+\includegraphics[width=0.90\columnwidth]{Figures/PE_Coverage.png}
+\par\end{centering}
+\caption{Number of observed photoelectrons (PEs) per 100 keV as a function of geometric coverage of the inner volume. It is assumed readout is via SiPM tiles and that the walls of the inner volume are covered with reflector as discussed in the text. \label{fig:pecoverage}}
+\end{figure}
+
+
+\subsection{Pulse Shape Discrimination}\label{sec:psd_calc}
+
+In order to evaluate the electron recoil rejection power achievable through pulse shape discrimination (\psd) a Monte-Carlo simulation code was used to generate the \fnt~distribution of \artn~events as a function of energy. The statistical simulation starts by generating Poisson-distributed photons at prompt (first 90 ns) and late times (after 90 ns) based on the energy of the interaction, and the energy and field-dependent scintillation yields and \fnt~(prompt/total) medians. The nuclear recoil scintillation yield quenching and \fnt~medians at 500 V/cm were obtained from the SCENE experiment \cite{cao2015measurement, cao2014study} for energies below 57 keV. Above those energies we used a constant extrapolation for the scintillation yield quenching and for the \fnt~medians followed the same energy dependence measured by Darkside-50 at 200 kV/cm \cite{agnes2018darkside} (as shown in Figure~\ref{fig:fnt_sim}). The electron recoil scintillation yield quenching was taken from the $^{83}$Kr measurements at 500 V/cm by SCENE \cite{cao2015measurement, cao2014study} while the \fnt~medians were obtained from the DarkSide-50 data \cite{agnes2015first} measured at 200 V/cm, due to lack of data at 500 V/cm. The overall light collection efficiency plays a critical role in the discrimination power and was set to 3.75 pe/keV$_{ee}$ at null field to match the 1 pe/keV$_{nr}$ (at 500 V/cm field, above 57 keV$_{nr}$) light collection estimated in the optical simulations above. The simulation takes into account variations in the recorded number of photoelectrons due to the response of traditional PMTs to single photoelectrons ($\sigma \sim 0.4$ photoelectrons) and digitization noise. We note that the use of silicon photomultipliers instead of traditional PMTs would greatly reduce this contribution. The simulated prompt and late signals are then combined to form the S1 scintillation and \fnt~variables. 
+
+\begin{figure}[ht]
+\begin{centering}
+\includegraphics[width=0.90\columnwidth]{Figures/f90_s1_3000ty_1pe.pdf}
+\par\end{centering}
+\caption{Pulse shape discrimination F90 variable as a function of scintillation light S1. The figure shows the \artn~electron recoil band simulated by the Monte Carlo simulation code described in the text. The median of the nuclear recoil band at 200 V/cm and 500 V/cm (extrapolated above 57 keV$_r$) is shown for comparison.  \label{fig:fnt_sim}}
+\end{figure}
+
+As discussed above, even with the use of underground argon, we expect that \artn~will be the dominant electron recoil background in this detector and have only simulated events with energies drawn from the \artn~beta decay spectrum. The output of this simulation shows good agreement with the measured F90-S1 distributions, dominated by \artn, in the initial DarkSide-50 data using atmospheric argon (see Figure 4 in \cite{agnes2015first}). We note that the simulation does not take into account photon time-of-flight delays that might be relevant in detectors of the proposed size (though it can be mitigated with the addition of optical separators), or events with unusual topologies, such as interactions in detector materials that can produce fast Cherenkov light \cite{agnes2018darkside, koh2018dark}. 
+
+We simulated a total exposure of 3 kton$\cdot$yrs, assuming an \artn~rate of \SI{7.3E-4}{\becquerel\per\kgar} as achieved in low-radioactivity underground argon, as shown in Figure~\ref{fig:fnt_sim}. It can be seen that in this simulation no events were produced with \fnt~above the nuclear recoil median for energies greater than 67 keV$_r$. To account for statistical fluctuations as well as some of the simplifications in the model mentioned above, we have assumed that one \artn~event will leak above the nuclear recoil median for a threshold of 75 PE (75 keV$_r$) and 0 events above 100 PEs (corresponding to 100 keV$_r$, or roughly 32 keV$_{ee}$). For reference, we expect roughly 1.6 (1.7) $\times10^{10}$ \artn~decays in this exposure to fall in the 100 (75) - 400 pe range. Since this number is orders of magnitude larger than the contributions from other sources of electron recoils in the fiducial volume of interest, pulse shape discrimination should eliminate all other electron recoil backgrounds.
+
+\subsection{External Gamma Background Amelioration}
+\label{sec:gamma_bkgd_calc}
+It is expected that gammas from detector materials will be significantly reduced by the planned 1~kt fiducialization. To evaluate potential leakage events into the fiducial volume we used the Geant4 simulation described in Section~\ref{sec:nba} to evaluate this risk. The two most dangerous sources of gamma background, due to proximity to this volume, are likely to be the proposed acrylic box surrounding the fiducial volume, and the photosensors and electronics at the top and bottom of the detector, with the top more susceptible due to the low density gas multiplication region. In order to estimate the potential background contribution we simulated $^{40}$K and $^{208}$Tl, which produce high energy 1.4 and 2.6 MeV gammas respectively, from each of these regions.
+
+We find that for acrylic with a few parts-per-trillion $^{232}$Th content (as achieved by SNO~\cite{acrylic}), a 5 cm inch thick box bordering our inner fiducial volume contributes about 1170 $^{208}$Tl events per year. A fiducial cut of events greater than 1~m from the acrylic removes more than 99\% of that, leaving only 8 events, or 24 for 3 kt-years, before applying any pulse shape discrimination.
+
+For gammas emitted from the top of the detector we find that only $10^{-13}$ and $10^{-6}$ fraction of $^{40}$K and $^{208}$Tl decays, respectively, produce signals above 75 keV in our fiducial volume. Given reasonable material radioactivities of 1 Bq/kg $^{40}$K and 10 mBq/kg of $^{232}$Th and a mass density of 0.5 gm/cm$^2$ (e.g. 3-mm thick G-10) we estimate a background gamma rate of $0.2 \cdot 10^{-3}$ and 40 events/yr from these two sources, respectively, in the inner 1-kt fiducial volume -- again before application of PSD. 
+
+In conclusion, the rates of electron recoils from both of these sources are negligible compared to the \artn~rate and such events are completely removed through the pulse shape discrimination described in Section~\ref{sec:psd_calc}.
+
+% With simulations, using the DUNE background taskforce's 25 mBq/kg from G10/FR4, we find 185 (110) [270] events per year of the initial decays survive above 75 (100) [50] keV into our inner volume. This is easily removed via PSD. \rs{Need to remove references to background taskforce. I suggest to simply state a survival probability}
+
+%The DUNE background taskforce estimates these~\cite{bgd-taskforce} at 4.9 Bq/kg entering from the G10 circuit boards. We thus perform a study in which we run $^{40}$K decays from our detector ceiling where the G10 would be. We presume a 3mm thick 10mx58m sheet of G10 up in the LEM and find that the 1.46 MeV gammas appear at the sub $10^{-3}$ level per kt-year and ignore this background subsequently.
+
+\subsection{Radon Daughter Backgrounds}
+\label{sec:radon_calc}
+
+In this section we describe calculations of radon-induced background levels.
+
+\subsubsection{$^{214}$Pb}
+$^{214}$Pb is a low energy beta-emitting daugther of radon, whose decays produce electron recoils that fall within the energy range of interest. From a radon concentration at the DarkSide-50 upper limit of 2 $\mu$Bq/kg, 63000 events/(ton$\cdot$yr) from $^{214}$Pb decays would be expected, giving 1.9$\times10^8$ events in the total 3 kton$\cdot$yr exposure. Only a fraction of these events would fall in the energy range of interest, and as shown in Section~\ref{sec:psd_calc}, this contribution is $<1\%$ of the \artn~background and can be easily removed through the application of pulse shape discrimination.
+
+\subsubsection{$^{40}$Ar($\alpha$, n)}
+A more dangerous background for large argon-based dark mater detectors that to our knowledge has not been previously discussed in the literature is neutrons produced by $^{40}$Ar \alphan~interactions from $\alpha$-emitting radon daughters. The ($\alpha,n$) simulation code NeucBOT \cite{westerdale2017radiogenic} estimates a total neutron yield of \num{3.62E-7}, \num{1.10E-6}, and \num{1.24E-5} n/decay for the alpha emissions of $^{222}$Rn, $^{218}$Po, and $^{214}$Po respectively. For a radon concentration of 2 $\mu$Bq/kg, this corresponds to a neutron rate of roughly \num{1.5E4} neutrons/17.5 ktons/yr in the whole argon module. Geant4 simulations of neutrons drawn from the expected \alphan~spectrum indicate that roughly 3\% or \num{1.3E3} neutrons/3yr of these neutrons will produce a single-scatter nuclear recoil in the 1-kton fiducial volume, and would be the dominant source of nuclear recoil backgrounds in the energy range of interest.
+
+Since these nuclear recoils would occur in prompt coincidence with the \alphan~interaction that produces the neutron, any energy deposits associated with the \alphan~interaction would be detected in coincidence with the nuclear recoil signal, either pushing it out of the window of interest or, if it is from a gamma, making the detected scintillation time profile more like an electron recoil such that it can be removed through PSD. 
+The $^{214}$Po decay, which contributes roughly 90\% of the \alphan~neutrons, occurs in delayed coincidence with the preceding $^{214}$Bi decay, with a half-life of 164 $\mu$s. Since the $^{214}$Bi decay typically deposits more energy than the \artn~$\beta$~decay endpoint, the $^{214}$Po decays can be tagged and removed with high efficiency, though the coincidence time window will have to be set taking into account the corresponding loss of livetime.
+
+The $\alpha$ decays of interest all have energies above 5 MeV. Should the $\alpha$ deposit even a small fraction of its energy in the argon before inducing the \alphan~interaction, the associated scintillation light would push the detected event outside the 100-400 photoelectron window proposed for the dark matter search. 
+
+Even if the $\alpha$ does not deposit significant energy in the argon, there is a high probability that the \alphan~interaction will proceed to an excited state of the $^{43}$Ca nucleus, likely producing a coincident gamma ray. The Q-value for the \alphan~reaction is -2.37 MeV and the lowest excited state of the $^{43}$Ca nucleus is only 373 keV. TALYS 1.95 \cite{koning2007talys} simulations of 5.5 and 6.0 MeV $\alpha$s (corresponding to $^{222}$Rn and $^{218}$Po respectively) indicate that 88\% and 91\% of the \alphan~interactions go to an excited state of the $^{43}$Ca nucleus. 
+
+A quantitative estimate of this background requires a full simulation of the $\alpha$ interaction in the argon to estimate the amount of energy deposited in the argon before the \alphan~interaction, an accurate modeling of the resulting excited states and decay products of the $^{43}$Ca nucleus, the conversion of these energy deposits into scintillation and ionization, and a model of the detector response and tagging efficiency. This is beyond the scope of this current work and we have assumed that all of the neutrons generated by $^{40}$Ar\alphan~can be rejected. However, given the dangerous nature of this background, this should be more thoroughly evaluated for all large scale liquid argon dark matter detectors.
+
+\subsubsection{Radon Plate-out}
+We note that decay of radon in the air surrounding detector components can lead to the plate-out of radon daughters on the surface. Alpha emitting daughters can then induce the production of neutrons through \alphan~interactions on the surfaces (e.g. $^{210}$Pb alphas interacting with $^{13}$C in the acrylic). The magnitude of this contribution compared to that from \ur~and \thr~in the bulk of the materials depends on the specifics of the materials used, the location and storage of the detector materials, and handling procedures during assembly, and is not included in these preliminary estimates. 
+
+\subsection{Neutrino Backgrounds}
+\label{sec:neutrino_calc}
+We calculate an expected background contribution from neutrino nuclear coherent scatters at various thresholds from references~\cite{strigari1} and \cite{strigari2} The standard model cross-section is integrated with the Honda neutrino flux~\cite{honda} above the desired nuclear recoil threshold energy. We arrive at 19.3 (25.7) events for a threshold of 100 (75) keV events for our three kton-year exposure, dominated by the contribution from atmospheric neutrinos. We take half of that, 10 (13) events, as our irreducible background given our defined 50\% nuclear recoil acceptance from pulse shape discrimination. A 20\% error is assigned in these references, though as with all our backgrounds we take the central value.
+
 
 \section{Sensitivity for Dark Matter Detection}
 
-We use the standard WIMP code~\cite{loer-code} that takes into account all the complications of WIMP scattering off heavy target nuclei, including seasonal variation and standard structure function uncertainties. In figure~\ref{fig:Sensitivity} we show three world-leading, experimental heavy noble limits. We also show the 90\% sensitivity reach of the liquid argon  Darkside20k~\cite{darkside20k} experiment, along with that of the full GADMC limit~\cite{gadmc}, which is the planned follow-on to Darkside20k. We point out that GADMC is built to get below the neutrino floor. We overlay three potential sensitivities from the DUNE 4$^{th}$ detector in which we imagine running our 1 kt fiducial volume for 3 years. Such a strategy would produce a physics result on the timescale of the Darkside20k result and ahead of the would-be GADMC result.
+We use a WIMP sensitivity calculation~\cite{loer-code} that takes into account the kinematic details of WIMP scattering off heavy target nuclei, including nuclear form factors and effects\footnote{We use $v_{\tt escape}=544, v_{\tt dispersion}=220$ and $v_{\tt rotation}=244$ km/sec and a dark matter density $\rho=0.3$ GeV/c$^2$/cm$^3$.} of the Earth's motion~\cite{lewinsmith}. We comment that our sensitivity code does not account for energy-dependent acceptance. In figure~\ref{fig:Sensitivity} we show experimental limits from previous argon-based experiments and the current best limit at high masses from XENON1T~\cite{xenon1t}. We also show the projected sensitivity reach of the liquid argon  Darkside-20k~\cite{darkside20k} experiment, along with that of the ARGO experiment~\cite{darkside20k}, which is the planned follow-on to Darkside-20k. We present three potential sensitivities from our large DUNE-like detector after running our 1~kt fiducial volume for 3 years. Such a strategy would produce a physics result on the timescale of the Darkside-20k result and ahead of the proposed ARGO result.
 
 
 \begin{figure}[t]
 \begin{centering}
-\includegraphics[width=0.90\columnwidth]{Figures/paper_placeholder.pdf}
+\includegraphics[width=0.90\columnwidth]{Figures/sens90_100-10-bkd_50pcteff_5cMay2020.pdf}
 \par\end{centering}
 
-\caption{Shown are the achieved 90\% limits in solid colored lines for various experiments for WIMP Dark Matter. Dashed lines for proposed argon experiments are overlaid. Three DUNE possibilities for module 4 for various thresholds and expected backgrounds, as discussed in the text, are shown in black lines. \label{fig:Sensitivity}}
+\caption{Shown are the achieved 90\% limits in solid colored lines for various experiments for WIMP Dark Matter searches~\cite{amaudruz2018first,darkside50,xenon1t}. Dashed lines for proposed argon experiments are overlaid from~\cite{darkside20k} and for LZ from~\cite{LZ}. The Darkside-20k exposure is 20 tons for a planned 10 years for a total 200 ton-yrs, while our proposal for a DUNE-like module is 3 years of a 1 kt mass for a 3 kt-yr exposure. The ARGO exposure is a planned 300 tons for ten years for a total of 3 kt-yr. Two possibilities for a DUNE-like module 4 for two thresholds and expected backgrounds, as discussed in the text, are shown in black lines. A third, aspirational, DUNE module 4 sensitivity for  a 50 keV threshold  is also drawn as a thinner line.   \label{fig:Sensitivity}}
 \end{figure}
 
 \section{Results and Discussion}
 
-Table~\ref{table:DUNE} shows estimated backgrounds for one would-be DUNE dark matter scenario that we investigate. The scenarios vary by energy threshold and assumed background, from likely achievable to extremely ambitious. 
+ The sensitivity results for the three thresholds studied are shown in Figure~\ref{fig:Sensitivity} and backgrounds at each threshold are summarized in Table~\ref{table:DUNE}. We judge the background scenarios and thresholds as progressively more ambitious, but  achievable if light collection and radiopurity standards are increased as required. 
+ 
+ For a 100 keV nuclear recoil threshold the gamma backgrounds are small with respect to \artn, and negligible after application of PSD, while the neutron backgrounds may be controlled by a reasonable radiopurity requirement for the cryostat steel (at a less stringent level than leading dark matter experiments), in combination with exterior water tanks. For a 75 keV threshold we show that the neutron background is still sub-10 events, and PSD continues to give the necessary rejection factor. We find  atmospheric neutrinos are the dominant and irreducible background for a 100 keV nuclear threshold and are on equal footing to the cryostat steel neutrons for 75 keV nuclear recoil.
 
+Finally, the most ambitious sensitivity curve we show for this study is at a 50 keV$_r$ threshold.  The contribution of neutrons from the cold cryoskin at this threshold is 174 events. If we require the cryostat steel to be a factor 80 cleaner, at levels planned for LZ and DarkSide, we can lower this neutron background to roughly 2 events. At a 50 keV$_r$ threshold the contribution from external rock neutrons only increases to 13 events as a result of the fact that at this low threshold our multi-site tagging removes more than 90\% of events. Further, if we increase the photo-coverage to roughly 55\% of the top and bottom surfaces of the detector we can increase the light collection to 1.5 pe/keV$_r$, which allows for only one electron recoil leakage event after PSD. Assuming that all gamma backgrounds remain sub-dominant to \artn~at this threshold, we obtain a total background contribution (including atmospheric neutrinos) of 33 events, leading to the {\em aspirational} sensitivity curve shown on our plot.
 
-\begin{table}[h]
-\begin{tabular}{ l c c r}
-%%%%\multicolumn{4}{c}{\bf Background in 10 kt-yr 100 keV for threshold, (25 cm) 50cm thick Poly cryostat liner} \\
- Radioactive particle & Emanation source & Amelioration strategy & counts/kt-yr (before PSD)\\
+\begin{table}[ht]
+\begin{tabular}{ l  c r}
+%%%%\multicolumn{4}{c}{\bf Background in 10 kt-yr 100 keV threshold} \\
+Background  & Amelioration strategy & Counts/3 kt-yr \\
 \hline
- neutrons  & external rock & Poly lining, multi-site rejection & $< 1$ (10)\\
-  $^{40}$K gammas &  G10 & Self-shielding & $< 10^{-3}$ \\
-$^{208}$Tl gammas & $^{232}$Th chain in G10 & Self-shielding & 185\\
- $^{39}$Ar betas & bulk argon & Using depleted argon and PSD & 0.23  \\
+  neutrons  from external rock & external 40 cm water & 0.1 (1.6) [13] \\
+  & self-shielding, multi-site rej. &\\[8pt]
+ neutrons from cold cryoskin steel  & self-shielding, & $1.02~(14.2)~[2]$\\ &5 cm-thick acrylic, multi-site rej. &  \\[8pt]
+  $^{40}$K gammas from top & self-shielding, PSD & bPSD: $< 10^{-3}$\\
+  & & aPSD: 0 \\[8pt]
+$^{208}$Tl gammas from top & self-shielding, PSD & bPSD: $< 120$\\
+& & aPSD: 0 \\[8pt]
+$^{208}$Tl gammas from interior acrylic & PSD & bPSD: 24\\
+& & aPSD: 0 \\[8pt]
+$^{214}$Pb from radon & PSD & bPSD: $< 1.9\times10^8$\\
+& & aPSD: 0\\[8pt]
+$^{40}$Ar\alphan~from radon & coincident tagging & 0 \\
+& & (see Section~\ref{sec:radon_calc})\\[8pt]
+$^{39}$Ar betas in bulk argon & underground argon, PSD & bPSD: $1.6~(1.7) \times10^{10}$\\
+& & aPSD: 0 (1) [1] \\[8pt]
+atmospheric neutrinos & none & 10 (13) [17]\\
+\hline
 \end{tabular}
 \label{table:DUNE}
-\caption{Backgrounds considered and count rates per year in inner 1 kt fiducial volume. Presumes $^{39}$Ar depleted at $10^{-5}$, a multi-site rejection with 20cm resolution and a 100 keV nuclear recoil detectable threshold. Results are for a 50cm thick Poly cryostat lining, though we show for neutrons in parenthesis the number for a 25cm lining. Gamma backgrounds are shown before application of PSD, which reduces them by $10^{-9}$ and thus renders them irrelevant.}
+\caption{Backgrounds considered and estimated count rates in the inner 1 kt fiducial volume over 3 years. Electron recoil backgrounds are shown before (bPSD) and after (aPSD) application of PSD. These estimates presume 40 cm water tanks between the rock wall and outer cryostat, the use of underground argon with an \artn~rate of \SI{7.3E-4}{\becquerel\per\kgar}, multi-site rejection with 20 mm resolution, 100 keV$_r$ threshold, and a 50\% nuclear recoil acceptance. Where there is a significant difference we list the rates above a 75 keV$_r$ threshold in parenthesis and 50 keV$_r$ in brackets. The numbers listed for a 50 keV$_r$ threshold require a change in the detector configuration; see text.}
 \end{table}
 
-We see from figure~\ref{fig:Sensitivity} that the dedicated liquid argon Dark Matter detectors have an advantage below the 10-30 GeV WIMP mass range over anything DUNE can likely do. One imagines that a 50 keV threshold for a DUNE 4$^{th}$ detector module will be very difficult to achieve, given the sheer size of the detector and industrial materials that must be employed. We believe a 100 keV threshold is achievable with some reasonable radiopurity controls. Further, we have some confidence based on our own toy Monte Carlo and~\cite{privateconv:flavio} that 100 photons at 100 keV can be achieved with upgraded dense optical coverage, as we suggest here. The resulting two sensitivity curves show an interesting coverage with respect to Darkside20k. Further, we show that an ambitious background reduction and an intermediate threshold to the two just mentioned, in fact, allow to get to the neutrino floor in a manner akin to GADMC's plans.
+We see from figure~\ref{fig:Sensitivity} that due to the higher threshold (compared to dedicated dark matter detectors) this experiment is mostly sensitive to WIMP masses heavier than 30 GeV. Though a 50 keV$_r$ threshold for a DUNE-like detector module will be very difficult to achieve, given the sheer size of the detector and industrial materials that must be employed, we believe a 100~keV$_r$ (and even a 75~keV$_r$) threshold is achievable with some reasonable radiopurity controls. Further, we have some confidence based on our own toy Monte Carlo and~\cite{privateconv:flavio} that 100 photons at 100 keV$_r$ can be achieved with upgraded dense optical coverage, as we suggest here. The resulting sensitivity curves show an interesting coverage with respect to Darkside-20k, allowing a confirmation or refutation of a high mass signal between the two experiments. %Further, we show that an ambitious background reduction and an intermediate threshold to the two just mentioned, in fact, allow to get to the neutrino floor in a manner akin to GADMC's plans.
 
-We remind that at least one further problem must be overcome: at the claimed level of rejection of spurious $^{39}$Ar activity, there remains on the order of twelve decays during the vertical drift time in our DP detector which must be distinguished from each other and rejected. We presume this is a relatively straightforward offline task that with sufficiently light detector granularity can be tackled successfully.
+%\todo{It is worth pointing out that there are other opportunities in the DUNE program, as described in the Technical Design Report~\cite{TDR}, that could benefit significantly from improvements to light collection and radioactive backgrounds in both the SP and DP detectors. The supernova explosion detection efficiency is currently estimated to be lower than had been specified in the Conceptual Design Report, particularly at low energies. The proposed module, with its low energy threshold for the inner fiducialized volume, could even serve as the supernova event trigger for the full 40 kt DUNE far detector complex. The solar neutrino program, recently being envisioned for DUNE~\cite{beacom_snu} would benefit from a lower threshold than the current $\sim10$ MeV; formation of light "flashes" for determination of event time (T0) in all manner of non-beam physics events is relatively poor for low energy events, especially when events occur far from the light collectors. These are issues that have little bearing on the main DUNE beam neutrino physics program but which, if addressed properly, might significantly expand the physics scope of the experiment.}
+
+It is worth pointing out that there are other opportunities in the DUNE program, as described in the Technical Design Report~\cite{TDR}, that could benefit significantly from improvements to light collection and radioactive backgrounds in both the SP and DP detectors. The supernova energy threshold in the fiducialized volume could be lower than currently envisioned, and perhaps this volume could even serve as the supernova event trigger for the full 40 kt fiducial DUNE far detector complex. The solar neutrino program, recently suggested for DUNE~\cite{beacom_snu}, would benefit from a lower threshold than the  $\sim10$ MeV considered there. Lastly, the process of forming light "flashes" and determining $T_0$ for events occurring far from the light collectors in any large LArTPC will clearly improve with denser photo coverage and potentially  expand the physics scope of the experiment.
 
 \section{Conclusion}
-We show in this study that a large LArTPC detector filled with argon depleted at the level of $10^{-5}$ of $^{39}$Ar can be a world-competitor for high mass WIMP detection, given improved light detection for a self-shielded inner 1 kt of liquid  inside a DUNE-like 10 kt detector. We have some  confidence that commercial sources of such underground argon are obtainable on the DUNE 4$^{th}$ detector -- the so-called module of opportunity -- timescale of the mid-to-late 2020's. This allows the use of the widely understood technique employable in argon of pulse shape discrimination (PSD) to markedly suppress gamma backgrounds. 
+We show in this study that a large LArTPC detector filled with low-radioactivity underground argon can be competitive for high mass WIMP detection, given low radioactivity materials and improved light collection for a self-shielded inner 1 kt of liquid argon within a DUNE-like 10 kt detector. We have some confidence from proprietary discussions that affordable, commercial sources of such underground argon are obtainable on the timescale relevant to the fourth DUNE module.
 
-We show with a toy monte carlo that this much-improved light detection over the current DUNE dual phase design may likely be achieved. A denser array of photosensors, ala some combination of SiPMs and the ARIADNE camera, are required compared to the current DUNE DP design, as are reflective foils potentially placed in the argon. We show that neutrons in our inner 1 kt may be removed with a modest Poly lining in the cryostat. PSD may be employed to remove remaining $e-/\gamma$ background. Further, very aggressive radio-purity controls might allow a slight lowering of the threshold and background and, thus, the ability to get to the neutrino floor.
+We show with a toy Monte Carlo that this improved light detection added to a large LArTPC, like the DUNE dual phase design, is feasible with a denser array of photosensors and reflective foils placed in the argon. Pulse shape discrimination can then be employed to effectively remove electron recoil backgrounds within the fiducial volume. We show that neutrons in our inner 1 kt may be ameliorated to small levels with an outer 40 cm of moderating water and cuts to remove multi-site interactions. We also investigated the improvement in sensitivity possible with aggressive radiopurity controls and even higher light collection efficiency.
 
-With a detector module such as the one described here, a broad low-energy physics program for DUNE would be enabled that does not perturb the main neutrino program. Efficient measurements of solar neutrinos and supernovae reactions, at the least, become enabled in such a detector. In fact, we remark that this module, with its low energy threshold for the inner fiducialized volume, could serve as the supernova event trigger for the full 40 kt DUNE far detector complex.
+With a detector module as described here, a broad low-energy physics program would be enabled that would not perturb the main DUNE neutrino program. In addition to dark matter detection described in this paper, the proposed changes could also lead to more efficient measurements of solar neutrinos and low energy supernova neutrino interactions. 
 
+\acknowledgments
+The authors wish to express their gratitude for valuable discussions with Henning Back, Jim Fast, Ben Loer, and Shawn Westerdale,  and for the detector design drawing by Gabriel Ortega. This paper is not published on behalf of the DUNE collaboration.
 
 % We suggest to always provide author, title and journal data:
 % in short all the information that clearly identify a document.
 
+
 \begin{thebibliography}{99}
 
 \bibitem{ICARUS}
-The ICARUS Collaboration, \emph{Design, construction and Tests of the Icarus T600 Detector}, NIMA {\bf 55}, Issue 3, (2004) p329.
+The ICARUS Collaboration, \emph{Design, construction and Tests of the Icarus T600 Detector}, Nuclear Instruments and Methods in Physics Research A {\bf 55}, Issue 3, (2004) 329.
+
 \bibitem{MicroB}
-The MicroBooNE Collaboration, \emph{Design and Construction of the MicroBooNE Detector}, JINST {\bf 12} (2017) p2017.
+The MicroBooNE Collaboration, \emph{Design and Construction of the MicroBooNE Detector}, JINST {\bf 12} (2017) 2017.
+
+\bibitem{dune_mood}
+{Module of Opportunity for DUNE}.
+\newblock \url{https://www.bnl.gov/dmo2019/}.
+
+%\bibitem{agnes2018darkside}
+%The DarkSide Collaboration, \emph{DarkSide-50 532-day Dark Matter Search with Low-Radioactivity Argon}, Physics Review D, {\bf 98} (2018) 102006.
+
 \bibitem{TDR}
-{\bf FIXME}
-The DUNE Collaboration, \emph{The DUNE Far Detector Interim Design Report, Volume 1: Single Phase Module}, arXiv:1807.10327, 2018.
+The DUNE Collaboration, \emph{The DUNE Far Detector Interim Design Report, Volume 1: Single Phase Module}, arxiv:2002.02967 (2020).
 
 \bibitem{ARIADNE}
-A. Roberts, P. Svihra, A. Al-Refaie, H. Graafsma, J. Küpper, K. Majumdar, K. Mavrokoridis, A. Nomerotski, D. Pennicard, B. Philippou, S. Trippel, C. Touramanis, J. Vann, \emph{First Demonstration of 3D Optical Readout of a TPC using a single photon sensitive Timepix3 based camera}, arXiv:1810.09955, 2018.
+A. Roberts, P. Svihra, A. Al-Refaie, H. Graafsma, J. K{\"u}pper, K. Majumdar, K. Mavrokoridis, A. Nomerotski, D. Pennicard, B. Philippou, S. Trippel, C. Touramanis, J. Vann, \emph{First Demonstration of 3D Optical Readout of a TPC Using a Single Photon Sensitive Timepix3 Based Camera}, arXiv:1810.09955, (2018).
 
-\bibitem{beacom}
+\bibitem{beacom_bkd}
+Francesco Capozzi, Shirley Weishi Li, John F. Beacom, \emph{Developing the MeV Potential of DUNE: Detailed Considerations of Muon-Induced Spallation and Other Backgrounds}, Phys. Rev. C {\bf 99} (2019) 055810.
+
+\bibitem{darkside_sipm}
+M. {D'Incecco} and C. {Galbiati} and G. K. {Giovanetti} and G. {Korga} and X. {Li} and A. {Mandarano} and A. {Razeto} and D. {Sablone} and C. {Savarese}, \emph{Development of a Novel Single-Channel, 24 cm2, SiPM-Based, Cryogenic Photodetector}, IEEE Transactions on Nuclear Science {\bf 65} (2018) 591.
+
+\bibitem{beacom_snu}
 Francesco Capozzi, Shirley Weishi Li, Guanying Zhu, John F. Beacom, \emph{DUNE as the Next Generation Solar Neutrino Experiment}, Phys. Rev. Lett. {\bf 123}, (2019) 131803.
 
 \bibitem{darkside50}
-The Darkside Collaboration, {\emph Results from the first use of low radioactivity argon in a dark matter search} Physical Review D, 93 (2016) p081101.
+The Darkside Collaboration, \emph {Results from the First Use of Low Radioactivity Argon in a Dark matter Search,} Physical Review D, {\bf 93} (2016) 081101.
 
-\bibitem{svoboda}
-R. Svoboda, {\emph Neutrons in DUNE},
-https://agenda.ciemat.es/event/1127/contributions/2225/attachments/1693/2076/20191121\_DUNE\_Neutrons.pdf, CIEMAT Conference, Madrid, Spain (2019).
+\bibitem{privateconv:gaspro}
+Private communication, Henning Back, PNNL, November, (2019).
 
-\bibitem{bgd-taskforce}
-Rechenmacher, Stock, Haiston \emph{Radiological Background Model for DUNE MCCs},
-https://indico.fnal.gov/event/17817/session/6/contribution/12/material/slides/0.pdf.
+%\bibitem{svoboda}
+%R. Svoboda, \emph {Neutrons in DUNE},
+%https://agenda.ciemat.es/event/1127/contributions/2225/attachme%nts/1693/2076/20191121\_DUNE\_Neutrons.pdf, CIEMAT Conference, %Madrid, Spain (2019).
+
+%\bibitem{bgd-taskforce}
+%Rechenmacher, Stock, Haiston \emph{Radiological Background Model for DUNE MCCs},
+%https://indico.fnal.gov/event/17817/session/6/contribution/12/material/slides/0.pdf (2018).
+
+\bibitem{acrylic}
+P. Jagam, J.-X. Wang, J. J. Simpson, SNO Collaboration, 
+\emph {Thorium and Uranium Determinations in Acrylic by Neutron Activation Analysis}, 
+Journal of Radioanalytical and Nuclear Chemistry {\bf 171}, No. 2 (1993) 277.
+
+\bibitem{Geant4}
+The GEANT4 collaboration, \emph{Recent Developments in GEANT4} Nuclear Instruments and Methods in Physics Research A {\bf 835} (2016) 186.
+
+\bibitem{vk}
+V. Tomasello, V.A. Kudryavtsev, M. Robinson, 
+\emph {Calculation of Neutron Backgrounds for Underground Experiments}, 
+Nucl.Instrum.Meth. A {\bf 595} (2008) 431.
 
 \bibitem{loer-code}
-{\bf FIXME}
-Loer+ Others???, \emph{Title}, \emph{J. Abbrev.} {\bf vol} (year) pg.
+B. Loer, {\it dmplottools v0.1}, https://doi.org/10.5281/zenodo.3765920 (2020).
+
+
+\bibitem{lewinsmith}
+J.D. Lewin, P.F. Smith,
+\emph {Review of Mathematics, Numerical Factors and Corrections for Dark Matter Experiments Based on Elastic Nuclear Recoil}, 
+Astropart. Phys. {\bf 6} (1996) 87.
+
+\bibitem{strigari1}
+Newstead, Lang, Strigari,
+{\it Atmospheric Neutrinos in a Next-Generation Xenon Dark Matter Experiment}, arXiv:2002.08566 (2020).
+
+\bibitem{strigari2}
+Strigari,
+{\it Neutrino Coherent Scattering Rates at Direct Dark Matter Detectors}, arXiv:0903.3630   (2009).
+
+\bibitem{honda}
+M. Honda, T. Kajita, K. Kasahara, and S. Midorikawa,
+{\it Improvement of low energy atmospheric neutrino flux calculation using the JAM nuclear interaction model}, 
+Phys. Rev. D {\bf 83} (2011) 123001.
 
 \bibitem{darkside20k}
-The Darkside20k Collaboration, \emph{DarkSide-20k: A 20 Tonne Two-Phase LAr TPC for Direct Dark Matter Detection at LNGS},
- arXiv:1707.08145 (2017).
-
-\bibitem{gadmc}
-{\bf FIXME: NEED a CITATION<}
-The GADMC Collaboration,  \emph{DarkSide-20k: A 20 Tonne Two-Phase LAr TPC for Direct Dark Matter Detection at LNGS},
+The Darkside-20k Collaboration, \emph{DarkSide-20k: A 20 Tonne Two-Phase LAr TPC for Direct Dark Matter Detection at LNGS},
  arXiv:1707.08145 (2017).
 
 \bibitem{privateconv:flavio}
-Flavio Cavana conversation, \emph{DUNE Module of Opportunity Workshop}, Brookhaven National Laboratory, November, 2019.
+Flavio Cavana communication, \emph{DUNE Module of Opportunity Workshop}, Brookhaven National Laboratory, November, (2019).
 
+\bibitem{xenon1t}
+The Xenon Collaboration, \emph{Dark Matter Search Results from a One Ton-Year Exposure of XENON1T}, Phys. Rev. Lett. {\bf 121}  (2018) 111302.
+
+\bibitem{agnes2015first}
+P~Agnes, T~Alexander, A~Alton, K~Arisaka, HO~Back, B~Baldin, K~Biery,
+  G~Bonfini, M~Bossa, A~Brigatti, et~al.
+\newblock {\em First Results From the Darkside-50 Dark Matter Experiment at
+  Laboratori Nazionali del Gran Sasso,}
+\newblock Physics Letters B {\bf 743} (2015) 456.
+
+\bibitem{agnes2018darkside}
+P~Agnes, Ivone Freire da~Mota Albuquerque, T~Alexander, AK~Alton, GR~Araujo,
+  M~Ave, HO~Back, B~Baldin, G~Batignani, K~Biery, et~al.
+\newblock {\em Darkside-50 532-day Dark Matter Search with Low-Radioactivity Argon,}
+\newblock Physical Review D {\bf 98}  (2018) 102006.
+
+\bibitem{cao2015measurement}
+Huajie Cao, T~Alexander, A~Aprahamian, R~Avetisyan, HO~Back, AG~Cocco,
+  F~DeJongh, G~Fiorillo, Cristiano Galbiati, L~Grandi, et~al.
+\newblock {\em Measurement of Scintillation and Ionization Yield and Scintillation
+  Pulse Shape from Nuclear Recoils in Liquid Argon,}
+\newblock Physical Review D {\bf 91} (2015) 092007.
+
+\bibitem{cao2014study}
+Huajie Cao.
+\newblock {\em A Study of Nuclear Recoils in Liquid Argon Time Projection
+  Chamber for the Direct Detection of WIMP Dark Matter}.
+\newblock PhD thesis, Princeton University, doi: 10.2172/1182552, (2014).
+
+\bibitem{koh2018dark}
+Guangyong Koh.
+\newblock {\em A Dark Matter Search with DarkSide-50}.
+\newblock PhD thesis, Princeton University, (2018).
+
+\bibitem{amaudruz2018first}
+P-A Amaudruz, M~Baldwin, M~Batygov, B~Beltran, CE~Bina, D~Bishop, J~Bonatt,
+  G~Boorman, Mark~Guy Boulay, B~Broerman, et~al.
+\newblock {\em First Results from the DEAP-3600 Dark Matter Search with Argon at
+  SNOLAB}
+\newblock Physical Review Letters, {\bf 121} (2018) 071801.
+
+\bibitem{LZ}
+D.S. Akerib et al. (LUX-ZEPLIN Collaboration), et~al.
+\newblock {\em Projected WIMP sensitivity of the LUX-ZEPLIN dark matter experiment}
+\newblock Physical Review D, {\bf 101}  (2020) 052002.
+
+\bibitem{cavernRock}
+A. Best et~al.
+\newblock {\em Low Energy Neutron Background in Deep Underground Laboratories}, 
+Nuclear Instruments and Methods in Physics Research A {\bf 812}   (2016) 1.
+
+\bibitem{koning2007talys}
+Arjan~J Koning, Stephane Hilaire, and MC~Duijvestijn.
+\newblock \emph{Talys-1.0},
+\newblock {\em in International Conference on Nuclear Data for Science and Technology}, EDP Sciences (2007) 211.
+
+\bibitem{westerdale2017radiogenic}
+S~Westerdale and Peter~Daniel Meyers.
+\newblock \emph{Radiogenic Neutron Yield Calculations for Low-background Experiments},
+Nuclear Instruments and Methods in Physics Research Section A {\bf 875} (2017) 57.
+  
 
 % Please avoid comments such as "For a review'', "For some examples",
 % "and references therein" or move them in the text. In general,
